@@ -7,6 +7,78 @@ This set of scripts contains the following folders and content.
 
 ---
 
+# How To Deploy the ARM Template
+Files in the ARM-Templates folder will deploy a Server Intrastructure to host
+the SharePoint Environment.
+
+Steps to Deploy the ARM Resources:
+
+  1) Create Resource Group that will contain your VM's
+  2) Create a Resource Group & Key Vault 
+    * Use script Utility Scripts\Key Vault\KeyVault.ps1
+      * Be sure to update the $parameterName & $password variables
+  3) Create or Copy VM Image
+    
+    Create a Windows Server VM to use as Image that will be cloned for all servers in your SharePointFarm.
+    Once it is created then sys-prep the image using the steps specified in the 
+    SPFarm-ARM-Deploy.ps1 file.  (look for section _"Steps for how to Generalize a VM"_)
+
+    * Here are my recomendations for pre-installing your software
+      * Download software bits and put them in a folder called c:\\_SetupFiles
+        * Windows Updates
+        * Windows Management Framework 5.1
+        * SharePoint 2016
+        * SQL Server
+        * SharePOint Designer
+        * Identity Manager
+        * Workflow Manager
+        * Office Online Server
+        * VS Code
+        * cmdr
+        * git
+        * Chocolaty
+          * System Internals
+          * ULS Viewer
+Here is a screenshot of the pre-installed Software I put on my image.
+
+      ![Setup Folders](/ScreenShots/SetupFolder.png)
+  
+
+      * Run Setups
+          * Windows Management Framework 5.1
+          * SharePoint Prerequisites
+          * cmdr
+          * VS Code
+          * Create git project folder and clone this project
+            * Create Local Repository c:\_DSC\SharePoint-Lab-Setup-via-ARM-and-DSC
+
+      * Configure Default User
+        * Set Links
+        * Set Desktop 
+
+  4) Update the azuredeploy.parameters.json file
+
+    * Update the vmAdminUsername parameter
+
+    * Update the VmAdminPassword with the ID of the KeyVault and secrete name. Get those from the Azure Portal
+  
+    * Update the vm-SP-ImageURL and vm-SP-TestImageURL parameters with the URl to the 
+    sys-prepped image you created in step 3
+
+  5) Update the variables section of \ARM-Templates\SPFarm-ARM-Deploy.ps1
+
+  6) Run all the lines in \ARM-Templates\SPFarm-ARM-Deploy.ps1 down to and including the New-AzureRmResourceGroupDeployment cmdlt 
+
+  That should deploy your farm infrastructure.
+
+# How To Deploy DSC Files
+Log into each server and execute the DSC files specific to that server.
+  1) Execute InstallResources.ps1 to install DSC Resources
+  2) Insure the $dscFileName path is correct in file Deploy.ps1
+  3) Run all the lines down to the $mof.  If successfull run the Start-DscConfiguration  section rebooting and re-running when prompted.  
+  
+__Repeat the above section for each server__
+
 
 
 ## Folder: ARM-Templates
