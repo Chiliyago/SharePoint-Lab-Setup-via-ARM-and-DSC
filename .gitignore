@@ -1,5 +1,5 @@
 AzureProfile.json
-
+Common_Variables.ps1
 AzCopyCommandBuilder.ps1
 
 #OS junk files
