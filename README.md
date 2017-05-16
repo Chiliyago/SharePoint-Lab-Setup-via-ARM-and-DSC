@@ -41,7 +41,7 @@ Steps to Deploy the ARM Resources:
           * ULS Viewer
 Here is a screenshot of the pre-installed Software I put on my image.
 
-      ![SetupFolder](ScreenShotsScreenShots/SetupFolder.png)
+      ![SetupFolder](ScreenShots\SetupFolder.png)
   
 
       * Run Setups
