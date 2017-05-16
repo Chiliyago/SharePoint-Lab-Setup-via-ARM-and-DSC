@@ -1,0 +1,1204 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  
+  "parameters": 
+    {
+
+      "location": {
+        "type": "string",
+        "defaultValue": "westus",
+        "metadata": {
+          "description": "This is the location of your resource group"
+        }
+      },
+      "vm-SP-ImageURL": {
+        "type": "string",
+        "defaultValue": "https://mainstoreeonatynishp64.blob.core.windows.net/system/Microsoft.Compute/Images/vm-images/SpServer2016May2017-osDisk.b49d351c-63e2-4ecc-9004-38b45f331984.vhd",
+        "metadata": {
+          "description": "This is the URL of the sys-preped image you wish to use for your SharePoint Servers.  It must reside in the same resource group that you are deploying to as a prerequisite."
+        }
+
+      },
+      "vm-SP-TestImageURL": {
+        "type": "string",
+        "defaultValue": "https://mainstoreeonatynishp64.blob.core.windows.net/system/Microsoft.Compute/Images/vm-images/SpServer2016May2017-osDisk.b49d351c-63e2-4ecc-9004-38b45f331984.vhd",
+        "metadata": {
+          "description": "This is the URL of the sys-preped image you wish to use testing.  If you don't have a separate image just use same url in parameter vm-SP-ImageURL. It must reside in the same resource group that you are deploying to as a prerequisite."
+        }
+      },
+      "vm-DC1-Name": {
+        "type": "string",
+        "defaultValue": "DC1",
+        "metadata": {
+          "description": "The machine name of domain controller machine."
+        }
+      },
+      "nic4vm-DC1": {
+        "type": "string",
+        "defaultValue": "nic4vm-DC1",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the domain controller."
+        }
+      },
+      "pid4vm-DC1": {
+        "type": "string",
+        "defaultValue": "pid4vm-DC1",
+        "metadata": {
+          "description": "This is the name of the public ip of the domain controller."
+        }
+      },
+      "vmSize4-DC1": {
+        "type": "string",
+        "defaultValue": "Standard_DS2",
+        "metadata": {
+          "description": "This is size of the VM of the domain contoller machine."
+        }
+      },
+
+
+      "vm-SP1-Name": {
+        "type": "string",
+        "defaultValue": "SP-Web1",
+        "metadata": {
+          "description": "The machine name of SharePoint Web Server."
+        }
+      },
+      "nic4vm-SP1": {
+        "type": "string",
+        "defaultValue": "nic4vm-SP1",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the SharePoint Web Server."
+        }
+      },
+      "pid4vm-SP1": {
+        "type": "string",
+        "defaultValue": "pid4vm-SP1",
+        "metadata": {
+          "description": "This is the name of the public ip of the SharePoint Web Server."
+        }
+      },
+      "vmSize4-SP1": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the SharePoint Web Server."
+        }
+      },
+
+
+      "vm-SP2-Name": {
+        "type": "string",
+        "defaultValue": "SP-APP1",
+        "metadata": {
+          "description": "The machine name of SharePoint App1 Server."
+        }
+      },
+      "nic4vm-SP2": {
+        "type": "string",
+        "defaultValue": "nic4vm-SP2",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the SharePoint App1 Server."
+        }
+      },
+      "pid4vm-SP2": {
+        "type": "string",
+        "defaultValue": "pid4vm-SP2",
+        "metadata": {
+          "description": "This is the name of the public ip of the SharePoint App1 Server."
+        }
+      },
+      "vmSize4-SP2": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the SharePoint App1 Server."
+        }
+      },
+
+
+      "vm-SP3-Name": {
+        "type": "string",
+        "defaultValue": "SP-APP2",
+        "metadata": {
+          "description": "The machine name of SharePoint App2 Server."
+        }
+      },
+      "nic4vm-SP3": {
+        "type": "string",
+        "defaultValue": "nic4vm-SP3",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the SharePoint App2 Server."
+        }
+      },
+      "pid4vm-SP3": {
+        "type": "string",
+        "defaultValue": "pid4vm-SP3",
+        "metadata": {
+          "description": "This is the name of the public ip of the SharePoint App2 Server."
+        }
+      },
+      "vmSize4-SP3": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the SharePoint App2 Server."
+        }
+      },
+
+
+      "vm-SP4-Name": {
+        "type": "string",
+        "defaultValue": "SP-APP3",
+        "metadata": {
+          "description": "The machine name of SharePoint App2 Server."
+        }
+      },
+      "nic4vm-SP4": {
+        "type": "string",
+        "defaultValue": "nic4vm-SP4",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the SharePoint App3 Server."
+        }
+      },
+      "pid4vm-SP4": {
+        "type": "string",
+        "defaultValue": "pid4vm-SP4",
+        "metadata": {
+          "description": "This is the name of the public ip of the SharePoint App3 Server."
+        }
+      },
+      "vmSize4-SP4": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the SharePoint App3 Server."
+        }
+      },
+
+
+      "vm-SQL1-Name": {
+        "type": "string",
+        "defaultValue": "SP-SQL1",
+        "metadata": {
+          "description": "The machine name of Sql Server."
+        }
+      },
+      "nic4vm-SQL1": {
+        "type": "string",
+        "defaultValue": "nic4vm-SQL1",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the Sql Server."
+        }
+      },
+      "pid4vm-SQL1": {
+        "type": "string",
+        "defaultValue": "pid4vm-SQL1",
+        "metadata": {
+          "description": "This is the name of the public ip of the Sql Server."
+        }
+      },
+      "vmSize4-SQL1": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the Sql Server."
+        }
+      },
+
+
+      "vm-TestImg-Name": {
+        "type": "string",
+        "defaultValue": "SP-TestImg",
+        "metadata": {
+          "description": "The machine name of Test Server. You can use it as you wish or just delete it."
+        }
+      },
+      "nic4vm-TestImg": {
+        "type": "string",
+        "defaultValue": "nic4vm-TestImg",
+        "metadata": {
+          "description": "This is the name of the nic deployed to the Test Server."
+        }
+      },
+      "pid4vm-TestImg": {
+        "type": "string",
+        "defaultValue": "pid4vm-TestImg",
+        "metadata": {
+          "description": "This is the name of the public ip of the Test Server."
+        }
+      },
+      "vmSize4-TestImg": {
+        "type": "string",
+        "defaultValue": "Standard_DS2_v2",
+        "metadata": {
+          "description": "This is size of the VM of the Test Server."
+        }
+      },
+
+
+      "vm-storageAcc-Name": {
+        "type": "string",
+        "defaultValue": "mainstorage",
+        "metadata": {
+          "description": "This name of the primary storage used for VM Os Disks and the sys-preped VM Image used to build the VM's"
+        }
+      },
+      "vnet-name": {
+        "type": "string",
+        "defaultValue": "vnet-spfarm",
+        "metadata": {
+          "description": "This is name of the virtual network for the farm."
+        }
+      },
+      "netSecGrp-Name": {
+        "type": "string",
+        "defaultValue": "nsg-spfarm",
+        "metadata": {
+          "description": "This is name of the Network Security Group for the farm."
+        }
+      },
+      "vmAdminPassword": {
+        "type": "securestring",
+        "metadata": {
+          "description": "This is admin password used to access the VMs.  Should be pulled from the Key Vault specified in the parameters file."
+        }
+      },
+      "vmAdminUsername": {
+        "type": "string",
+        "defaultValue": "admin",
+        "metadata": {
+          "description": "This is user administrator user name for all the VM's "
+        }
+      },
+      "diagnosticsStorageAccountName": {
+        "type": "string",
+        "defaultValue": "diagstorage",
+        "metadata": {
+          "description": "This is the name of the storage account used for VM diagnostic data."
+        }
+      },
+      "diagnosticsStorageAccountType": {
+        "type": "string",
+        "defaultValue": "Standard_LRS",
+        "metadata": {
+          "description": "Type of storage account used for the VM diagnostic data"
+        }
+      },
+      "VmStorageAccountType": {
+        "type": "string",
+        "defaultValue": "Standard_LRS",
+        "metadata": {
+          "description": "Type of storage account used for the VM os disks"
+        },
+        "allowedValues": [
+          "Standard_LRS",
+          "Premium_LRS",
+          "Standard_GRS"
+        ]
+      },
+      "networkIPStart": {
+        "type": "string",
+        "defaultValue": "10.0.0.0",
+        "metadata": {
+          "description": "This is the starting IP address for the farm's network"
+        }
+      },
+      "DomainControllerIP": {
+        "type": "string",
+        "defaultValue": "10.0.0.100",
+        "metadata": {
+          "description": "this will be the IP of the farm's domain controller."
+        }
+      },
+      "subnetName": {
+        "type": "string",
+        "defaultValue": "default",
+        "metadata": {
+          "description": "This is the name of the network"
+        }
+      },
+      "publicIpAddressType": {
+        "type": "string",
+        "defaultValue": "Dynamic",
+        "metadata": {
+          "description": "This is the type of IP used for Public IP's"
+        }
+      }
+    },
+
+    "variables": 
+    {
+      "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('vnet-name'))]",
+      "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+      "metricsresourceid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/', 'Microsoft.Compute/virtualMachines/', parameters('vm-DC1-Name'))]",
+      "metricsclosing": "[concat('<Metrics resourceId=\"', variables('metricsresourceid'), '\"><MetricAggregation scheduledTransferPeriod=\"PT1H\"/><MetricAggregation scheduledTransferPeriod=\"PT1M\"/></Metrics></DiagnosticMonitorConfiguration></WadCfg>')]",
+      "metricsstart": "<WadCfg><DiagnosticMonitorConfiguration xmlns=\"http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\" overallQuotaInMB=\"4096\"><DiagnosticInfrastructureLogs scheduledTransferPeriod=\"PT1M\" scheduledTransferLogLevelFilter=\"Warning\"/><WindowsEventLog scheduledTransferPeriod=\"PT1M\"><DataSource name=\"Security!*[System[(Level = 1) or (Level = 2)]]\"/><DataSource name=\"Application!*[System[(Level = 1) or (Level = 2)]]\"/><DataSource name=\"Windows Azure!*[System[(Level = 1) or (Level = 2)]]\"/><DataSource name=\"System!*[System[(Level = 1) or (Level = 2)]]\"/><DataSource name=\"System!*[System[Provider[@Name='Microsoft Antimalware']]]\"/></WindowsEventLog>",
+      "metricscounters": "<PerformanceCounters scheduledTransferPeriod=\"PT0S\"><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Processor Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU percentage guest OS\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Interrupt Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU interrupt time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% Privileged Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU privileged time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor Information(_Total)\\Parking Status\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"CPU parking status\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor(_Total)\\% User Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"CPU user time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor Information(_Total)\\% Processor Performance\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Processor percent perf.\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Processor Information(_Total)\\Processor Frequency\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Processor frequency\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\System\\Threads\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Threads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\System\\Processes\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Processes\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Thread(_Total)\\Context Switches/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Context switches\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Committed Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Memory committed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Available Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Memory available\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\% Committed Bytes In Use\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Memory percentage\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Cache Faults/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Cache faults\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Page Faults/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Page faults\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Page Reads/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Page reads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Pages/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Memory pages\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Transition Faults/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Transition faults\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Pool Paged Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Paged pool\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Memory\\Pool Nonpaged Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Non-paged pool\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\% Processor Time\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\"Process total time\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Page Faults/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Process page faults\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Thread Count\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Process total threads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Handle Count\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Process total handles\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Private Bytes\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Process function bytes\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Working Set\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Process working set\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Process(_Total)\\Working Set - Private\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\"Process function working set\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Read Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Disk read guest OS\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\PhysicalDisk(_Total)\\Disk Write Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Disk write guest OS\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Bytes Total/Sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\"Web service bytes\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\ISAPI Extension Requests/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"ISAPI extension requests\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Connection Attempts/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Web connection attempts\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Current Connections\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"Web current connections\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Get Requests/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Web get requests\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\Web Service(_Total)\\Post Requests/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"Web post requests\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Connections Established\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"TCP connections established\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Connection Failures\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"TCP connections failed\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Connections Reset\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\"TCP connections reset\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Segments Sent/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"TCP segments sent\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Segments Received/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"TCP segments received\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\TCPv4\\Segments Retransmitted/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\"TCP seg. restransmitted\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Jit(_Global_)\\% Time in Jit\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\".NET CLR time in jit\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Loading(_Global_)\\% Time Loading\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\".NET CLR time loading\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR LocksAndThreads(_Global_)\\Current Queue Length\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\".NET CLR queue length\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR LocksAndThreads(_Global_)\\Contention Rate / sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\".NET CLR contention rate\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR LocksAndThreads(_Global_)\\# of current logical Threads\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\".NET CLR logical threads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR LocksAndThreads(_Global_)\\# of current physical Threads\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\".NET CLR phys. threads\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\% Time in GC\" sampleRate=\"PT15S\" unit=\"Percent\"><annotation displayName=\".NET CLR time in GC\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\Allocated Bytes/sec\" sampleRate=\"PT15S\" unit=\"BytesPerSecond\"><annotation displayName=\".NET CLR allocated\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\Gen 0 heap size\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\".NET CLR gen 0 heap size\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\Gen 1 heap size\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\".NET CLR gen 1 heap size\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\Gen 2 heap size\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\".NET CLR gen 2 heap size\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\Large Object Heap size\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\".NET CLR large obj. heap size\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Memory(_Global_)\\# Bytes in all Heaps\" sampleRate=\"PT15S\" unit=\"Bytes\"><annotation displayName=\".NET CLR heap bytes\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Networking(_Global_)\\Connections Established\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\".NET CLR connections \" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Remoting(_Global_)\\Remote Calls/sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\".NET CLR remote calls\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Exceptions(_Global_)\\# of Exceps Thrown / sec\" sampleRate=\"PT15S\" unit=\"CountPerSecond\"><annotation displayName=\".NET CLR exception rate\" locale=\"en-us\"/></PerformanceCounterConfiguration><PerformanceCounterConfiguration counterSpecifier=\"\\.NET CLR Interop(_Global_)\\# of marshalling\" sampleRate=\"PT15S\" unit=\"Count\"><annotation displayName=\".NET CLR interop marsh.\" locale=\"en-us\"/></PerformanceCounterConfiguration></PerformanceCounters>",
+      "wadcfgx": "[concat(variables('metricsstart'), variables('metricscounters'), variables('metricsclosing'))]",
+      "spVmImageURL": "[parameters('vm-SP-ImageURL')]",
+      "diagStorageAcct_Name": "[concat(parameters('diagnosticsStorageAccountName'), uniqueString(resourceGroup().id))]",
+      "diagStorageAcct_id":"[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]",
+      "vmStorageAcct_Name":"[concat(parameters('vm-storageAcc-Name'), uniqueString(resourceGroup().id))]",
+      "addressPrefix":"[concat(parameters('networkIPStart'),'/16')]",
+      "subnetPrefix":"[concat(parameters('networkIPStart'),'/24')]"
+    },
+
+  "resources": 
+    [
+      {
+        "name": "[parameters('vm-DC1-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-DC1"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-DC1'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-DC1-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-DC1')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-DC1-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-DC1-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-DC1'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-DC1')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-DC1'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-DC1"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "PrivateIpAddress": "[parameters('DomainControllerIP')]",
+                "privateIPAllocationMethod": "Static",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-DC1'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-DC1')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-DC1"
+        }
+      },
+      {
+        "name": "[concat(parameters('vm-DC1-Name'),'/Microsoft.Insights.VMDiagnosticsSettings')]",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "diag4vm-DC1"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('vm-DC1-Name'))]"
+        ],
+        "properties": {
+          "publisher": "Microsoft.Azure.Diagnostics",
+          "type": "IaaSDiagnostics",
+          "typeHandlerVersion": "1.5",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "xmlCfg": "[base64(variables('wadcfgx'))]",
+            "StorageAccount": "[variables('diagStorageAcct_Name')]"
+          },
+          "protectedSettings": {
+            "storageAccountName": "[variables('diagStorageAcct_Name')]",
+            "storageAccountKey": "[listKeys(variables('diagStorageAcct_id'),'2015-06-15').key1]",
+            "storageAccountEndPoint": "https://core.windows.net/"
+          }
+        }
+      },
+      {
+        "name": "[parameters('vm-SP1-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-SP1"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-SP1'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-SP1-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-SP1')]"
+          },
+          "storageProfile": {
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-SP1-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-SP1-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": [
+              {
+                "name": "datadisk1",
+                "diskSizeGB": "100",
+                "lun": 0,
+                "vhd": {
+                  "Uri": "[concat('http://',variables('vmStorageAcct_Name'),'.blob.core.windows.net/os-discs/',parameters('vmSize4-SP1'),'dataDisk1' ,'.vhd')]"
+                },
+                "caching": "ReadWrite",
+                "createOption": "Empty"
+              }
+
+            ]
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-SP1'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-SP1')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-SP1'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-SP1"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-SP1'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-SP1')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-SP1"
+        }
+      },
+      {
+        "name": "[parameters('vm-SP2-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-SP2"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-SP2'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-SP2-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-SP2')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-SP2-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-SP2-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-SP2'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-SP2')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-SP2'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-SP2"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-SP2'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-SP2')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-SP2"
+        }
+      },
+      {
+        "name": "[parameters('vm-SP3-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-SP3"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-SP3'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-SP3-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-SP3')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-SP3-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-SP3-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-SP3'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-SP3')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-SP3'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-SP3"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-SP3'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-SP3')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-SP3"
+        }
+      },
+      {
+        "name": "[parameters('vm-SP4-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-SP4"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-SP4'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-SP4-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-SP4')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-SP4-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-SP4-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-SP4'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-SP4')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-SP4'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-SP4"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-SP4'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-SP4')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-SP4"
+        }
+      },
+      {
+        "name": "[parameters('vm-SQL1-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-SQL1"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-SQL1'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-SQL1-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-SQL1')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-SQL1-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[variables('spVmImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-SQL1-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-SQL1'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-SQL1')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-SQL1'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-SQL1"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-SQL1'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-SQL1')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-SQL1"
+        }
+      },
+      {
+        "name": "[parameters('vm-TestImg-Name')]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-TestImg"
+        },
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', parameters('nic4vm-TestImg'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', variables('diagStorageAcct_Name'))]"
+        ],
+        "properties": {
+          "osProfile": {
+            "computerName": "[parameters('vm-TestImg-Name')]",
+            "adminUsername": "[parameters('vmAdminUsername')]",
+            "adminPassword": "[parameters('vmAdminPassword')]",
+            "windowsConfiguration": {
+              "provisionVmAgent": "true"
+            }
+          },
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize4-TestImg')]"
+          },
+          "storageProfile": {
+
+            "osDisk": {
+              "osType": "Windows",
+              "name": "[parameters('vm-TestImg-Name')]",
+              "createOption": "FromImage",
+              "image": {
+                "uri": "[parameters('vm-SP-TestImageURL')]"
+              },
+              "vhd": {
+                "uri": "[concat(concat(reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('vmStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob'], 'os-discs/'), parameters('vm-TestImg-Name'), '2016812162929.vhd')]"
+              },
+              "caching": "ReadWrite"
+            },
+            "dataDisks": []
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic4vm-TestImg'))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": true,
+              "storageUri": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables('diagStorageAcct_Name')), '2015-06-15').primaryEndpoints['blob']]"
+            }
+          }
+        },
+        "resources": [
+
+        ]
+      },
+      {
+        "name": "[parameters('nic4vm-TestImg')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworks/', parameters('vnet-name'))]",
+          "[concat('Microsoft.Network/publicIpAddresses/', parameters('pid4vm-TestImg'))]",
+          "[concat('Microsoft.Network/networkSecurityGroups/', parameters('netSecGrp-Name'))]"
+        ],
+        "tags": {
+          "displayName": "nic4vm-TestImg"
+        },
+        "properties": {
+          "primary": true,
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                },
+                "privateIPAllocationMethod": "Dynamic",
+                "publicIpAddress": {
+                  "id": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('pid4vm-TestImg'))]"
+                }
+              }
+            }
+          ],
+          "networkSecurityGroup": {
+            "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('netSecGrp-Name'))]"
+          }
+        }
+      },
+      {
+        "name": "[parameters('pid4vm-TestImg')]",
+        "type": "Microsoft.Network/publicIpAddresses",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+        },
+        "tags": {
+          "displayName": "pid4vm-TestImg"
+        }
+      },
+      {
+        "name": "[variables('vmStorageAcct_Name')]",
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "vm-storageAccount"
+        },
+        "properties": {
+          "accountType": "[parameters('VmStorageAccountType')]"
+        }
+      },
+      {
+        "name": "[variables('diagStorageAcct_Name')]",
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "diag-storageAccount"
+        },
+        "properties": {
+          "accountType": "[parameters('diagnosticsStorageAccountType')]"
+        }
+      },
+      {
+        "name": "[parameters('vnet-name')]",
+        "type": "Microsoft.Network/virtualNetworks",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[variables('addressPrefix')]"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "[parameters('subnetName')]",
+              "properties": {
+                "addressPrefix": "[variables('subnetPrefix')]"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "[parameters('netSecGrp-Name')]",
+        "type": "Microsoft.Network/networkSecurityGroups",
+        "apiVersion": "2015-06-15",
+        "location": "[parameters('location')]",
+        "properties": {
+          "securityRules": [
+            {
+              "name": "default-allow-rdp",
+              "properties": {
+                "priority": 1000,
+                "sourceAddressPrefix": "*",
+                "protocol": "TCP",
+                "destinationPortRange": "3389",
+                "access": "Allow",
+                "direction": "Inbound",
+                "sourcePortRange": "*",
+                "destinationAddressPrefix": "*"
+              }
+            }
+          ]
+        }
+      }
+    ],
+  
+  "outputs": 
+    {
+      "adminUsername": {
+        "type": "string",
+        "value": "[parameters('vmAdminUsername')]"
+      },
+      "vmStorageAccountName": {
+          "type": "string",
+          "value": "[variables('vmStorageAcct_Name')]"
+      },
+      "diagStorageAccountName": {
+        
+          "type": "string",
+          "value": "[variables('diagStorageAcct_Name')]"
+        
+      }
+    }
+}

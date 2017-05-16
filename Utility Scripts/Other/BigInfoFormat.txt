@@ -1,0 +1,29 @@
+User Name:	<User Name>
+Host Name:	<Host Name>
+Machine Domain:	<Machine Domain>
+IP Address:	<IP Address>
+Logon Server:	<Logon Server>
+
+Logon Domain:	<Logon Domain>
+DNS Server:	<DNS Server>
+DHCP Server:	<DHCP Server>
+Subnet Mask:	<Subnet Mask>
+Default Gateway:	<Default Gateway>
+
+IE Version:	<IE Version>
+MAC Address:	<MAC Address>
+Memory:	<Memory>
+Network Card:	<Network Card>
+Network Speed:	<Network Speed>
+Network Type:	<Network Type>
+OS Version:	<OS Version>
+Service Pack:	<Service Pack>
+Snapshot Time:	<Snapshot Time>
+System Type:	<System Type>
+
+Volumes:	<Volumes>
+
+Free Space:	<Free Space>
+
+Boot Time:	<Boot Time>
+CPU:	<CPU>

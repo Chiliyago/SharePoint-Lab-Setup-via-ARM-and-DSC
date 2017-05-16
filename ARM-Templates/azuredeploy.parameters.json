@@ -1,0 +1,41 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    
+    "vmAdminUsername": {
+      "value": "TimOdell"
+    },
+    "vmAdminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/1a8a0996-79f7-487f-a9b9-a1b2f12a7f8a/resourceGroups/team-keyvault/providers/Microsoft.KeyVault/vaults/keyvault-1"
+        },
+        "secretName": "vmAdminPassword-Tim"
+      }
+    },
+    "networkIPStart": {
+      "value": "10.0.0.0"
+    },
+    "DomainControllerIP": {
+      "value": "10.0.0.100"
+    },
+    "vm-storageAcc-Name": {
+      "value": "mainstore"
+    },
+    "diagnosticsStorageAccountName": {
+      "value": "diagstore"
+    },
+    "vm-SP-ImageURL": {
+      "value": "https://mainstore5wjud2ypndj7m.blob.core.windows.net/vm-images/SpServer2016-osDisk.7b42e068-d2b0-479a-9d1c-e512af27e68c.vhd"
+    },
+    "vm-SP-TestImageURL": {
+      "value": "https://mainstore5wjud2ypndj7m.blob.core.windows.net/vm-images/SpServer2016-osDisk.7b42e068-d2b0-479a-9d1c-e512af27e68c.vhd"
+    }
+
+
+
+
+  }
+
+}

@@ -1,0 +1,3 @@
+## set vs code as default text editor for git.  
+## will replace vm as git's default editor
+git config --global core.editor "'C:\Program Files (x86)\Microsoft VS Code\code.exe' -w"
