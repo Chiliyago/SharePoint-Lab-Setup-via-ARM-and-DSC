@@ -5,6 +5,8 @@
 
 This set of scripts contains the following folders and content.
 
+PowerPoint Presentation Used When Presenting this solution
+https://1drv.ms/p/s!AiMOucOyxOOXpJtjZ6E4AfcgPaa7ew
 ---
 
 # How To Deploy the ARM Template
